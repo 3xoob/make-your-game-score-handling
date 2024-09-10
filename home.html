@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel='shortcut icon' type='image/x-icon' href='favicon.ico'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Score Schedule</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+     <style>
+        /* General body styles */
+body {
+    background: url(./static/Images/Bildschirmfoto-2022-09-28-um-19-58-38.png);
+    background-size: cover; /* Cover the entire viewport */
+            background-repeat: no-repeat; /* Prevent image repetition */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: bisque;
+            font-family: 'Limelight', cursive;
+}
+#story {
+    background-color: darkkhaki;
+}
+/* Table styling */
+table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    color: olive;
+    
+}
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+th {
+    background-color: darkkhaki;
+    color: white;
+}
+tr:hover {
+   background-color:  darkkhaki;
+
+    
+}
+#button2 {
+    display: none;
+    color: #333;
+}
+
+/* Header styles */
+h1 {
+    text-align: center;
+    color: darkkhaki;
+}
+/* Link styles */
+a {
+    display: block;
+    width: max-content;
+    margin: 20px auto;
+    padding: 10px;
+    background-color: darkkhaki;
+    color: darkkhaki;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 5px;
+    font-weight: bold;
+}
+a:hover {
+    background-color: darkkhaki;
+}
+    </style>
+    <h1>Score Schedule</h1>
+    <a href="/"><button id="story">story</button></a>
+    <table border="1" id="scoreTable">
+        <tr>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Score</th>
+            <th>Time</th>
+        </tr>
+        {{range .}}
+        <tr>
+            <td>{{.Rank}}</td>
+            <td>{{.Name}}</td>
+            <td>{{.Score}}</td>
+            <td>{{.Time}}</td>
+        </tr>
+        {{end}}
+    </table>
+
+    <script>
+        const ws = new WebSocket('ws://' + window.location.host + '/ws');
+
+        ws.onopen = function() {
+            console.log('WebSocket connection established');
+        };
+
+        ws.onmessage = function(event) {
+            const scores = JSON.parse(event.data);
+            console.log('Received scores:', scores);
+            updateScoreTable(scores);
+            console.log(score.name);
+
+        };
+
+        ws.onerror = function(err) {
+            console.error('WebSocket error:', err);
+        };
+
+        function updateScoreTable(scores) {
+            const table = document.getElementById('scoreTable');
+            // Clear all rows except the header
+            table.innerHTML = `
+                <tr>
+                    <th>Rank</th>
+                    <th>Name</th>
+                    <th>Score</th>
+                    <th>Time</th>
+                </tr>`;
+
+            const name = scores.map(score => {
+                console.log(score.name)
+                const row = table.insertRow();
+                row.insertCell(0).textContent = score.rank;
+                row.insertCell(1).textContent = score.name;
+                row.insertCell(2).textContent = score.score;
+                row.insertCell(3).textContent = score.time;
+            });
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel='shortcut icon' type='image/x-icon' href='favicon.ico'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Story Example</title>
+    <style>
+        body {
+            background: url(./static/Images/Bildschirmfoto-2022-09-28-um-19-58-38.png);
+            background-size: cover; /* Cover the entire viewport */
+            background-repeat: no-repeat; /* Prevent image repetition */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: bisque;
+            font-family: 'Limelight', cursive;
+        }
+        h1 {
+            margin-top: 20px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        #map-selection {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px; /* Space between buttons */
+            margin-bottom: 20px; /* Space from the bottom */
+            margin-top:auto;
+        }
+        .map-button-container {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Space between Map 1 and Show Story */
+        }
+        button {
+            background: beige;
+            color: olive;
+            font-size: 28px;
+            width: 160px;
+            height: 60px;
+            text-transform: uppercase;
+            border: 10px groove darkkhaki;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background: bisque;
+        }
+        #videoContainer {
+            display: none; /* Initially hide the video */
+            margin-top: 20px;
+        }
+        #storyButton2 {
+            display: none; /* Initially hide the video */
+            margin-top: 20px;
+        }
+        #videoContainer2 {
+            display: none; /* Initially hide the video */
+            margin-top: 20px;
+        }
+        #storyButton3 {
+            display: none; /* Initially hide the video */
+            margin-top: 20px;
+        }
+        #videoContainer3 {
+            display: none; /* Initially hide the video */
+            margin-top: 20px;
+        }
+        #button1 {
+            display: none;
+        }
+        #storyButton1 {
+            display: none;
+        }
+        
+        /* Hide map buttons by default */
+        #button2, #button3 {
+            display: none;
+        }
+        #nameInput {
+            color: olive;
+            background: beige;
+            text-align: center;
+            font-family: 'Limelight', cursive;
+            text-transform: uppercase;
+            width: 260px;
+            height: 37px;
+            font-size: 35px;
+            border: 10px groove darkkhaki;
+            border-radius: 10px;
+            display: block;
+            margin: auto;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+        #submitName {
+            background: beige;
+            color: olive;
+            font-family: 'Limelight', cursive;
+            font-size: 28px;
+            margin: auto;
+            width: 160px;
+            height: 60px;
+            text-transform: uppercase;
+            border: 10px groove darkkhaki;
+            border-radius: 10px;
+            margin-bottom: 100px;
+        }
+        #submitName:hover {
+            background: bisque;
+        }
+        .container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        #typeNameText {
+            margin: auto;
+            margin-top: 20px;
+            display: inline-block;
+            color: bisque;
+            font-family: 'Limelight', cursive;
+            background: black;
+            font-size: 25px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to My Story</h1>
+    <div id="map-selection">
+        <div class="map-button-container">
+            <button onclick="selectMap('map1')" id="button1">Map 1</button>
+            <button id="storyButton1">Story</button>
+        </div>
+        <div class="map-button-container">
+            <button onclick="selectMap('map2')" id="button2">Map 2</button>
+            <button id="storyButton2">Story</button>
+        </div>
+        <div class="map-button-container">
+            <button onclick="selectMap('map3')" id="button3">Map 3</button>
+            <button id="storyButton3">Story</button>
+        </div>
+    </div>
+    <a href="/scores"><button>Scores</button></a>
+    <div id="videoContainer">
+        <video controls width="600">
+            <source src="./static/Images/WhatsApp Video 2024-09-09 at 8.46.09 PM.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <div id="videoContainer2">
+        <video controls width="600">
+            <source src="./static/Images/WhatsApp Video 2024-09-09 at 8.46.10 PM.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <div id="videoContainer3">
+        <video controls width="600">
+            <source src="./static/Images/WhatsApp Video 2024-09-09 at 8.46.12 PM.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <div id="inputContainer" class="container">
+        <p id="typeNameText">Type your name:</p>
+        <input type="text" id="nameInput" name="storyInput"><br>
+        <div id="nameError" style="color: red;"></div>
+        <input id="submitName" type="button" value="Submit" onclick="submitName();" />
+    </div>
+    
+</div>
+    <script>
+        const storyButton = document.getElementById('storyButton1');
+        const videoContainer = document.getElementById('videoContainer');
+        const storyButton2 = document.getElementById('storyButton2');
+        const videoContainer2 = document.getElementById('videoContainer2');
+        const storyButton3 = document.getElementById('storyButton3');
+        const videoContainer3 = document.getElementById('videoContainer3');
+        const button2 = document.getElementById('button2');
+        const button3 = document.getElementById('button3');
+        storyButton.addEventListener('click', () => {
+            videoContainer.style.display = 'block'; // Show the video
+            storyButton.style.display = 'none'; // Hide the button after clicking
+        });
+        storyButton2.addEventListener('click', () => {
+            videoContainer2.style.display = 'block'; // Show the video
+            storyButton2.style.display = 'none'; // Hide the button after clicking
+        });
+        storyButton3.addEventListener('click', () => {
+            videoContainer3.style.display = 'block'; // Show the video
+            storyButton3.style.display = 'none'; // Hide the button after clicking
+        });
+        function selectMap(mapKey) {
+            localStorage.setItem('selectedMap', mapKey);
+            window.location.href = '/index'; // Redirect to the game page
+        }
+        const storedValue2 = localStorage.getItem('map2key');
+        if (storedValue2 === "true") {
+            button2.style.display = 'block'; // Show Map 2 button
+            storyButton2.style.display = 'flex';
+        }
+        const storedValue3 = localStorage.getItem('map3key');
+        if (storedValue3 === "true") {
+            button3.style.display = 'block'; // Show Map 3 button
+            storyButton3.style.display = 'flex';
+        }
+        function submitName() {
+            var name = document.getElementById("nameInput").value.trim(); // Trim any whitespace
+            var errorContainer = document.getElementById("nameError");
+            var inputContainer = document.getElementById("inputContainer");
+            var button1 = document.getElementById("button1");
+            var storyButton1 = document.getElementById("storyButton1");
+            if (!name) {
+                // Check if the name is empty
+                errorContainer.textContent = "Please enter a name.";
+                return; // Stop the function if the name is empty
+            } else if (name.length > 20) {
+                // Check if the name is too long
+                errorContainer.textContent = "Name is too long. Please keep it under 20 characters.";
+                return; // Stop the function if the name is too long
+            } else {
+                // Clear any previous error messages
+                errorContainer.textContent = "";
+            }
+            // Proceed if no errors
+            console.log("Name submitted: " + name);
+            inputContainer.style.display = 'none'; // Hide input container
+            localStorage.setItem('submitName', name); // Store the name in localStorage
+            button1.style.display = 'flex'; // Show the Map 1 button
+            storyButton1.style.display = 'flex'; // Show the Story button
+        }
+        if (localStorage.getItem('submitName') != null) {
+            button1.style.display = 'flex';
+            storyButton1.style.display = 'flex';
+            inputContainer.style.display = 'none';
+        } 
+    </script>
+</body>
+</html>
